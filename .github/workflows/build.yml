@@ -18,21 +18,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Flutter'ı sabit sürümle yükle (Dart >= 3.5)
+      # 2. Flutter'ı sabit sürümle yükle ve cache kullan
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.24.0"  # Flutter 3.13 Dart 3.5 içerir
+          flutter-version: "3.24.0"  # Flutter 3.24 Dart 3.5 içerir
+          cache: true
 
-      # 3. Flutter bağımlılıklarını yükle
+      # 3. Flutter bağımlılıkları ve build output cache
+      - name: Cache Flutter Pub & Build
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            build
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
+      # 4. Flutter bağımlılıklarını yükle
       - name: Install dependencies
         run: flutter pub get
 
-      # 4. APK'yı derle
+      # 5. APK'yı derle
       - name: Build APK
         run: flutter build apk --release
 
-      # 5. APK'yı artefakt olarak yükle (v4)
+      # 6. APK'yı artefakt olarak yükle
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
