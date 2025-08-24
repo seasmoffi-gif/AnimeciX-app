@@ -18,11 +18,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Flutter'ı sabit sürümle yükle
+      # 2. Flutter'ı sabit sürümle yükle (Dart >= 3.5)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.13.0"  # Sabit Flutter sürümü, stable sürümüne göre güncelleyebilirsin
+          flutter-version: "3.13.0"  # Flutter 3.13 Dart 3.5 içerir
 
       # 3. Flutter bağımlılıklarını yükle
       - name: Install dependencies
